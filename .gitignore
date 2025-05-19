@@ -12,3 +12,4 @@ wheels/
 runs/
 .env
 auth_storage.json
+urls.txt

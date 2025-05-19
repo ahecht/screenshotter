@@ -46,8 +46,8 @@ def write_log_entry(log_writer, url, status, detail):
     })
 
 
-def run(limit=None, headless=ENV_HEADLESS):
-    urls = read_urls(URLS_FILE, limit=limit)
+def run(limit=None, headless=ENV_HEADLESS, urlfile=URLS_FILE):
+    urls = read_urls(urlfile, limit=limit)
     output_dir, log_path = create_run_output_dir()
 
     with open(log_path, mode="w", newline="") as log_file:
@@ -67,7 +67,7 @@ def run(limit=None, headless=ENV_HEADLESS):
             for url in urls:
                 print(f"Visiting: {url}")
                 try:
-                    page.goto(url, wait_until="networkidle", timeout=15000)
+                    page.goto(url, wait_until="networkidle", timeout=30000)
                     # Detect redirect to login page
                     if "signin" in page.url.lower():
                         raise Exception("Redirected to login – stored session likely expired.")
@@ -90,8 +90,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Capture full-page screenshots from a list of URLs")
     parser.add_argument('--limit', type=int, help="Limit the number of URLs to process")
     parser.add_argument('--headless', type=str, choices=['true', 'false'], help="Override headless mode (true/false)")
+    parser.add_argument('--urlfile', type=str, help="Path to file containing list of URLs", default="urls.txt")
     args = parser.parse_args()
 
     headless_flag = ENV_HEADLESS if args.headless is None else args.headless.lower() == "true"
 
-    run(limit=args.limit, headless=headless_flag)
+    run(limit=args.limit, headless=headless_flag, urlfile=args.urlfile)
