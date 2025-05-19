@@ -58,10 +58,16 @@ def run(limit=None, headless=ENV_HEADLESS, urlfile=URLS_FILE):
         with sync_playwright() as p:
             print(f"Launching browser (headless={headless})...")
             browser = p.chromium.launch(headless=headless)
-            context = browser.new_context(storage_state="auth_storage.json")
-            page = context.new_page()
 
-            print("✅ Using stored session, ready to capture pages.")
+            # Try to use stored session if it exists
+            if os.path.exists("auth_storage.json"):
+                context = browser.new_context(storage_state="auth_storage.json")
+                print("✅ Using stored session, ready to capture pages.")
+            else:
+                context = browser.new_context()
+                print("🔓 No stored session found, proceeding without authentication.")
+
+            page = context.new_page()
 
             # STEP 2: Visit and capture each URL
             for url in urls:
