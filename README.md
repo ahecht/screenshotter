@@ -50,7 +50,7 @@ playwright install
 ## Configuration
 
 For non-authenticated use, you don't need any variables.
-You can set `HEADLESS` in a `.env` file if you like, or you can pass it as a parameter.
+You can set `HEADLESS` in a `.env` file if you like, or you can pass it as a parameter. Defaults to `True`.
 
 ```env
 HEADLESS=True  # or False for visible browser

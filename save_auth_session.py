@@ -15,10 +15,12 @@ USERNAME_SELECTOR = os.getenv("USERNAME_SELECTOR", "input[name='email']")
 PASSWORD_SELECTOR = os.getenv("PASSWORD_SELECTOR", "input[name='password']")
 SUBMIT_SELECTOR = os.getenv("SUBMIT_SELECTOR", "input[type='submit']")
 
+ENV_HEADLESS = os.getenv("HEADLESS", "True").lower() in ("1", "true", "yes")
 
-def save_auth(username, password):
+
+def save_auth(username, password, headless=ENV_HEADLESS):
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)  # Force visible for login debugging
+        browser = p.chromium.launch(headless=headless)
         context = browser.new_context()
         page = context.new_page()
 
@@ -38,8 +40,11 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Save authentication session for a website')
     parser.add_argument('--username', help='Username/email for login (overrides USERNAME env var)')
     parser.add_argument('--password', help='Password for login (overrides PASSWORD env var)')
+    parser.add_argument('--headless', type=str, choices=['true', 'false'], help="Override headless mode (true/false)")
 
     args = parser.parse_args()
+
+    headless_flag = ENV_HEADLESS if args.headless is None else args.headless.lower() == "true"
 
     # Get credentials from args or environment variables
     username = args.username or os.getenv("USERNAME")
@@ -48,4 +53,4 @@ if __name__ == "__main__":
     if not username or not password:
         parser.error("Username and password must be provided either via command line arguments or environment variables")
 
-    save_auth(username, password)
+    save_auth(username, password, headless=headless_flag)
