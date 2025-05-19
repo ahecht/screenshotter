@@ -1,6 +1,6 @@
 # Screenshotter
 
-A Python tool for capturing full-page screenshots from a list of URLs using Playwright. This tool is particularly useful for taking screenshots of authenticated web pages, as it supports session persistence.
+A Python tool for capturing full-page screenshots from a list of URLs using Playwright. Supports session persistence for capturing URLs that require authentication.
 
 ## Features
 
@@ -117,14 +117,3 @@ The log file contains:
 - URL
 - Status (success/fail)
 - Details (screenshot path or error message)
-
-## Development
-
-This project uses:
-- Playwright for browser automation
-- python-dotenv for environment variable management
-- CSV for logging
-
-## License
-
-[Add your license here]
