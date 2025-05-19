@@ -91,7 +91,7 @@ Note: If your session expires, you'll need to run `save_auth_session.py` again t
 
 2. Run the script:
 ```bash
-python main.py
+python screenshotter.py
 ```
 
 ### Command Line Options
