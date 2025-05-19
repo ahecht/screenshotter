@@ -4,7 +4,7 @@ import re
 import csv
 from datetime import datetime
 from dotenv import load_dotenv
-from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeoutError
+from playwright.sync_api import sync_playwright
 
 # Load config from .env
 load_dotenv()
